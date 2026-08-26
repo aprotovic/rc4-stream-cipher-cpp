@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const string KEY = "TeamBravoRC4Key";
+const string KEY = "MyK3y4th!s";
 
 void rc4(vector<unsigned char>& data) {
     unsigned char S[256];
@@ -16,13 +16,13 @@ void rc4(vector<unsigned char>& data) {
 
     int j = 0;
 
-    // KSA
+    
     for (int i = 0; i < 256; i++) {
         j = (j + S[i] + KEY[i % KEY.length()]) & 0xFF;
         swap(S[i], S[j]);
     }
 
-    // PRGA + XOR
+   
     int i = 0;
     j = 0;
 
@@ -44,10 +44,6 @@ int main() {
 
     ifstream input(filename, ios::binary);
 
-    if (!input) {
-        cerr << "Could not open file.txt\n";
-        return 1;
-    }
 
     vector<unsigned char> data(
         (istreambuf_iterator<char>(input)),
