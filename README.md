@@ -1,6 +1,6 @@
 # RC4 File Encryptor
 
-This is a small C++ project that uses RC4 to change a file and then bring it back to normal.
+This is a small C++ program that uses RC4 to change a file and then bring it back to normal.
 
 The encryptor reads the file, mixes it with a key, and saves the changed version.
 The decryptor uses the same key to reverse it and get the original file back.
@@ -26,5 +26,4 @@ g++ decrypt.cpp -o decrypt
 ./decrypt
 ```
 
-This is a basic RC4 example to learn how stream ciphers work in a simple way.
 
