@@ -1,13 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
 #include <string>
-
 using namespace std;
 
 const string KEY = "MyK3y4th!s";
 
-void rc4(vector<unsigned char>& data) {
+void rc4(string& text) {
     unsigned char S[256];
 
     for (int i = 0; i < 256; i++) {
@@ -15,60 +13,43 @@ void rc4(vector<unsigned char>& data) {
     }
 
     int j = 0;
-
-    
     for (int i = 0; i < 256; i++) {
         j = (j + S[i] + KEY[i % KEY.length()]) & 0xFF;
         swap(S[i], S[j]);
     }
 
-   
     int i = 0;
     j = 0;
 
-    for (size_t k = 0; k < data.size(); k++) {
+    for (size_t k = 0; k < text.size(); k++) {
         i = (i + 1) & 0xFF;
         j = (j + S[i]) & 0xFF;
-
         swap(S[i], S[j]);
 
-        unsigned char keystream =
-            S[(S[i] + S[j]) & 0xFF];
-
-        data[k] ^= keystream;
+        unsigned char keyByte = S[(S[i] + S[j]) & 0xFF];
+        text[k] = text[k] ^ keyByte;
     }
 }
 
 int main() {
-    const string filename = "file.txt";
+    string filename = "file.txt";
+    ifstream in(filename, ios::binary);
 
-    ifstream input(filename, ios::binary);
-
-
-    vector<unsigned char> data(
-        (istreambuf_iterator<char>(input)),
-        istreambuf_iterator<char>()
-    );
-
-    input.close();
-
-    rc4(data);
-
-    ofstream output(filename, ios::binary);
-
-    if (!output) {
-        cerr << "Could not write file.txt\n";
-        return 1;
+    string text;
+    char ch;
+    while (in.get(ch)) {
+        text += ch;
     }
+    in.close();
 
-    output.write(
-        reinterpret_cast<const char*>(data.data()),
-        data.size()
-    );
+    rc4(text);
 
-    output.close();
+    ofstream out(filename, ios::binary);
+    for (size_t i = 0; i < text.size(); i++) {
+        out.put(text[i]);
+    }
+    out.close();
 
     cout << "File encrypted successfully.\n";
-
     return 0;
 }
