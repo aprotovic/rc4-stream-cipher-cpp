@@ -1,29 +1,30 @@
 # RC4 File Encryptor
 
-## Overview
+This is a small C++ project that uses RC4 to change a file and then bring it back to normal.
 
-This project implements an RC4 stream cipher file encryptor and decryptor in C++.
-
-The program reads the contents of `file.txt` in binary mode, encrypts the bytes using RC4 with a specified key, and writes the encrypted data back to the file.
-
-The decryptor uses the same RC4 key to restore the original contents.
+The encryptor reads the file, mixes it with a key, and saves the changed version.
+The decryptor uses the same key to reverse it and get the original file back.
 
 ## Files
 
-- `encryptor.cpp` - Encrypts `file.txt` using RC4.
-- `decryptor.cpp` - Decrypts `file.txt` using the same RC4 key.
-- `file.txt` - Test file used by the programs.
+- encrypt.cpp - changes the file
+- decrypt.cpp - restores the file
+- file.txt - the file used for testing
 
-## RC4 Process
+## Simple idea
 
-RC4 consists of two main stages:
+The program makes a list of numbers from 0 to 255, shuffles them with the key, and then uses those numbers to change the file bytes.
 
-1. Key Scheduling Algorithm (KSA)
-2. Pseudo-Random Generation Algorithm (PRGA)
+It uses XOR, so the same process can undo the change later.
 
-The generated RC4 keystream is XORed with the file data.
+## Run it
 
-Encryption:
+```bash
+g++ encrypt.cpp -o encrypt
+g++ decrypt.cpp -o decrypt
+./encrypt
+./decrypt
+```
 
-```text
-Plaintext XOR Keystream = Ciphertext
+This is a basic RC4 example to learn how stream ciphers work in a simple way.
+
